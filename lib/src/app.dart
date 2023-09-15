@@ -7,6 +7,8 @@ import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
+import 'package:chronicle/src/timeline_view/timeline_view.dart';
+
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
   const MyApp({
@@ -71,9 +73,15 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case SampleItemDetailsView.routeName:
                     return const SampleItemDetailsView();
+                  case TimelinePage.routeName:
+                    return TimelinePage(
+                        title: 'Your Title', key: Key('Your Key'));
                   case SampleItemListView.routeName:
+
                   default:
-                    return const SampleItemListView();
+                    return TimelinePage(
+                        title: 'Your Title', key: Key('Your Key'));
+                    ;
                 }
               },
             );

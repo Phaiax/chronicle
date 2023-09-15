@@ -14,6 +14,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  timeline_list: ^0.0.3 # https://pub.dev/packages/timeline_list
 
 dev_dependencies:
   flutter_test:
