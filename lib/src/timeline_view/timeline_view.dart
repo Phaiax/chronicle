@@ -153,6 +153,14 @@ class _TimelinePageState extends State<TimelinePage> {
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
+                              Text(
+                                doodle.name,
+                                style: textTheme.labelLarge,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(0.0),
                                 child: Hero(
@@ -162,14 +170,6 @@ class _TimelinePageState extends State<TimelinePage> {
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 8.0,
-                              ),
-                              Text(
-                                doodle.name,
-                                style: textTheme.labelLarge,
-                                textAlign: TextAlign.center,
                               ),
                               const SizedBox(
                                 height: 8.0,

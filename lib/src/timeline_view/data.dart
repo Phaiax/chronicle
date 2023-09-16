@@ -18,8 +18,8 @@ class Doodle {
 
 const List<Doodle> doodles = [
   Doodle(
-      name: "Al-Sufi (Azophi)",
-      time: "903 - 986",
+      name: "VS Code",
+      time: "11:10",
       content:
           "One of Al-Sufi's greatest works involved fact-checking the Greek astronomer Ptolemy's measurements of the brightness and size of stars. In the year 964 AD, Al-Sufi published his findings in a book titled Kitab al-Kawatib al-Thabita al-Musawwar, or The Book of Fixed Stars. In many cases, he confirmed Ptolemy’s discoveries, but he also improved upon his work by illustrating the constellations and correcting some of Ptolemy’s observations about the brightness of stars.",
       doodle:
@@ -27,8 +27,8 @@ const List<Doodle> doodles = [
       icon: Icon(Icons.star, color: Colors.white),
       iconBackground: Colors.cyan),
   Doodle(
-      name: "Abu al-Wafa’ al-Buzjani",
-      time: "940 - 998",
+      name: "Spotify",
+      time: "11:00",
       content:
           " Abu al-Wafa' is an innovator whose contributions to science include one of the first known introductions to negative numbers, and the development of the first quadrant, a tool used by astronomers to examine the sky. His pioneering work in spherical trigonometry was hugely influential for both mathematics and astronomy.",
       doodle:
