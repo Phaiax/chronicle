@@ -11,12 +11,13 @@ environment:
 
 dependencies:
   bitsdojo_window: ^0.1.5
+  hid_listener:
+    path: vendor/hid_listener
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   timeline_list: ^0.0.3 # https://pub.dev/packages/timeline_list
-  mouse_event: ^0.1.1
   screen_capturer: ^0.1.7
   path_provider: ^2.0.15
   sqflite_common_ffi: ^2.3.0+2

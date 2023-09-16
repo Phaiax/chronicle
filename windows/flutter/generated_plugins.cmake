@@ -4,7 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
-  mouse_event
+  hid_listener
   screen_capturer
 )
 

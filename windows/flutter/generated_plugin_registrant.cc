@@ -7,14 +7,14 @@
 #include "generated_plugin_registrant.h"
 
 #include <bitsdojo_window_windows/bitsdojo_window_plugin.h>
-#include <mouse_event/mouse_event_plugin.h>
+#include <hid_listener/hid_listener_plugin_windows.h>
 #include <screen_capturer/screen_capturer_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   BitsdojoWindowPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("BitsdojoWindowPlugin"));
-  MouseEventPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("MouseEventPlugin"));
+  HidListenerPluginWindowsRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("HidListenerPluginWindows"));
   ScreenCapturerPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ScreenCapturerPlugin"));
 }

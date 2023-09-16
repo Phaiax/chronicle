@@ -12,7 +12,6 @@ import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
 import 'package:chronicle/src/timeline_view/timeline_view.dart';
-import 'package:mouse_event/mouse_event.dart';
 import 'package:screen_capturer/screen_capturer.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -49,14 +48,8 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
   void onAppFullyLoaded() {
     // This is the code that gets executed after the app is fully loaded
     print("The app has been fully loaded!");
-    MouseEventPlugin.startListening(onMouseEvent);
+    //  MouseEventPlugin.startListening(onMouseEvent);
     DatabaseHelper().debugPrintDatabaseScreenshots(); // Trigger initializatoin
-  }
-
-  void onMouseEvent(MouseEvent mouseEvent) {
-    if (mouseEvent.mouseMsg == MouseEventMsg.WM_LBUTTONDOWN) {
-      doCapture(mouseEvent.x, mouseEvent.y);
-    }
   }
 
   @override
