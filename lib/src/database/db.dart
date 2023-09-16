@@ -167,11 +167,13 @@ class DatabaseHelper {
   }
 
   void debugPrintDatabaseScreenshots() async {
-    logger.d("Screenshots in database:");
+    StringBuffer buffer = StringBuffer();
+    buffer.write("Screenshots in database:\n");
     for (Map<String, dynamic> screenshot in await getAllScreenshots()) {
-      logger.d(
-          " - x=${screenshot["mousex"]} y=${screenshot["mousey"]} marked=${screenshot["marked"]} full=${screenshot["screenshotFullPath"]}");
+      buffer.write(
+          " - x=${screenshot["mousex"]} y=${screenshot["mousey"]} marked=${screenshot["marked"]} full=${screenshot["screenshotFullPath"]}\n");
     }
+    logger.d(buffer.toString());
   }
 
   // Future<img.Image?> getScreenshotFull(int id) async {
