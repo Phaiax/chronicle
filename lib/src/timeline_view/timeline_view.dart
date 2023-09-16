@@ -36,7 +36,7 @@ class _TimelinePageState extends State<TimelinePage> {
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.format_align_left),
-                label: "LEFT",
+                label: "LEFTY",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.format_align_center),
@@ -44,7 +44,7 @@ class _TimelinePageState extends State<TimelinePage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.format_align_right),
-                label: "RIGHT",
+                label: "RIGHTY",
               ),
             ]),
         appBar: AppBar(
