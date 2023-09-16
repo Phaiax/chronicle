@@ -62,7 +62,7 @@ class SettingsView extends StatelessWidget {
                   sleep(duration);
                   appWindow.show();
                 },
-                child: Text('Hide 5 sek (broken)'),
+                child: const Text('Hide 5 sek (broken)'),
               ),
             ),
 
@@ -73,7 +73,7 @@ class SettingsView extends StatelessWidget {
                 onPressed: () {
                   app.doCapture(500, 500);
                 },
-                child: Text('Do a screenshot.'),
+                child: const Text('Do a screenshot.'),
               ),
             ),
           ],

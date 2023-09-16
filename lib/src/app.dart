@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:chronicle/main.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as p;
 import 'package:chronicle/src/database/db.dart';
@@ -27,14 +28,13 @@ class MyApp extends StatefulWidget {
   final SettingsController settingsController;
 
   @override
-  RunSomeStuffAfterInitState createState() =>
-      RunSomeStuffAfterInitState(settingsController);
+  RunSomeStuffAfterInitState createState() {
+    return RunSomeStuffAfterInitState();
+  }
 }
 
 class RunSomeStuffAfterInitState extends State<MyApp> {
-  final SettingsController settingsController;
-
-  RunSomeStuffAfterInitState(this.settingsController);
+  RunSomeStuffAfterInitState();
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
 
   void onAppFullyLoaded() {
     // This is the code that gets executed after the app is fully loaded
-    print("The app has been fully loaded!");
+    logger.i("The app has been fully loaded!");
     //  MouseEventPlugin.startListening(onMouseEvent);
     DatabaseHelper().debugPrintDatabaseScreenshots(); // Trigger initializatoin
   }
@@ -61,7 +61,7 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return ListenableBuilder(
-      listenable: settingsController,
+      listenable: widget.settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
           // Providing a restorationScopeId allows the Navigator built by the
@@ -96,7 +96,7 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
           // SettingsController to display the correct theme.
           theme: ThemeData(),
           darkTheme: ThemeData.dark(),
-          themeMode: settingsController.themeMode,
+          themeMode: widget.settingsController.themeMode,
 
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.
@@ -106,15 +106,16 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
+                    return SettingsView(controller: widget.settingsController);
                   case SampleItemDetailsView.routeName:
                     return const SampleItemDetailsView();
                   case TimelinePage.routeName:
-                    return TimelinePage(
+                    return const TimelinePage(
                         title: 'Your Title', key: Key('Your Key'));
                   case SampleItemListView.routeName:
                   default:
-                    return TimelinePage(title: 'Wowi', key: Key('Your Key'));
+                    return const TimelinePage(
+                        title: 'Wowi', key: Key('Your Key'));
                 }
               },
             );
@@ -144,10 +145,10 @@ void doCapture(int x, int y, {String? windowTitle}) async {
     if (imgFull != null) {
       int width = min(imgFull.width, 300);
       int height = min(imgFull.height, 50);
-      int snippet_x = max(0, x - (width / 2).floor());
-      int snippet_y = max(0, y - (height / 2).floor());
+      int snippetX = max(0, x - (width / 2).floor());
+      int snippetY = max(0, y - (height / 2).floor());
       img.Image snippet = img.copyCrop(imgFull,
-          x: snippet_x, y: snippet_y, width: width, height: height);
+          x: snippetX, y: snippetY, width: width, height: height);
       img.encodePngFile(snippetPath, snippet);
     }
 
@@ -157,7 +158,7 @@ void doCapture(int x, int y, {String? windowTitle}) async {
         screenshotFullPath: imagePath,
         screenshotSnippetPath: snippetPath,
         activewindow: windowTitle);
-    print("Captured at $x $y ($windowTitle)!");
+    logger.i("Captured at $x $y ($windowTitle)!");
   }
   // capturedData.
 }

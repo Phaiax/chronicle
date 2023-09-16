@@ -1,4 +1,4 @@
-import 'package:sqflite_common/sqlite_api.dart';
+import 'package:chronicle/main.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -25,7 +25,7 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     String path = p.join((await getApplicationDocumentsDirectory()).path,
         'chronicle', 'chronicle.sqlite');
-    print('Database path: $path');
+    logger.i('Database path: $path');
     var databaseFactory = databaseFactoryFfi;
     Database db = await databaseFactory.openDatabase(path);
 
@@ -33,14 +33,14 @@ class DatabaseHelper {
       'SELECT name FROM sqlite_master WHERE type="table" AND name="Meta"',
     );
     if (result.isEmpty) {
-      print("Create Database from scratch");
+      logger.i("Create Database from scratch");
       await _onCreate(db, 0);
     } else {
       final result = await db
           .query('Meta', where: 'key = ?', whereArgs: ['schema_version']);
       final String schemaVersion = result[0]["value"] as String;
-      print("Migrate Database version $schemaVersion to $TARGET_VERSION");
-      _onUpgrade(db, int.parse(schemaVersion), TARGET_VERSION);
+      logger.i("Migrate Database version $schemaVersion to $targetVersion");
+      _onUpgrade(db, int.parse(schemaVersion), targetVersion);
     }
     return db;
   }
@@ -78,7 +78,7 @@ class DatabaseHelper {
     }
   }
 
-  static const int TARGET_VERSION = 1;
+  static const int targetVersion = 1;
 
   Future<void> _migrate(Database db, int version) async {
     switch (version) {
@@ -153,13 +153,13 @@ class DatabaseHelper {
     );
 
     if (maps.isNotEmpty) {
-      for (Map<String, dynamic> map in maps) {
-        // map["screenshotSnippet"] = img.decodePng(map["screenshotSnippet"]);
-        // if (map["windowicon"] != null) {
-        //   map["windowicon"] = img.decodePng(map["windowicon"]);
-        // }
-        // map["marked"] = map["marked"] > 0;
-      }
+      // for (Map<String, dynamic> map in maps) {
+      // map["screenshotSnippet"] = img.decodePng(map["screenshotSnippet"]);
+      // if (map["windowicon"] != null) {
+      //   map["windowicon"] = img.decodePng(map["windowicon"]);
+      // }
+      // map["marked"] = map["marked"] > 0;
+      // }
       return maps;
     }
 
@@ -167,9 +167,9 @@ class DatabaseHelper {
   }
 
   void debugPrintDatabaseScreenshots() async {
-    print("Screenshots in database:");
+    logger.d("Screenshots in database:");
     for (Map<String, dynamic> screenshot in await getAllScreenshots()) {
-      print(
+      logger.d(
           " - x=${screenshot["mousex"]} y=${screenshot["mousey"]} marked=${screenshot["marked"]} full=${screenshot["screenshotFullPath"]}");
     }
   }
