@@ -9,7 +9,6 @@ import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
 import 'package:chronicle/src/timeline_view/timeline_view.dart';
-import 'package:mouse_event/mouse_event.dart';
 import 'package:screen_capturer/screen_capturer.dart';
 import 'package:path_provider/path_provider.dart';
 
