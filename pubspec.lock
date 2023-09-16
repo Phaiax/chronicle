@@ -120,6 +120,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  hid_listener:
+    dependency: "direct main"
+    description:
+      name: hid_listener
+      sha256: "056472f6f4df29c9d040948740c71fa7fc346feda2c209b65f628e0749f3adfc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   intl:
     dependency: transitive
     description:
