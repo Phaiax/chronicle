@@ -50,4 +50,5 @@ struct MouseEvent {
     double x;
     double y;
     int64_t wheelDelta;
+    char* windowTitle;
 };

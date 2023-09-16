@@ -123,7 +123,7 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
   }
 }
 
-void doCapture(int x, int y) async {
+void doCapture(int x, int y, {String? windowTitle}) async {
   Directory directory = await getApplicationDocumentsDirectory();
   String imageName = 'Screenshot-${DateTime.now().millisecondsSinceEpoch}.png';
   String imagePath =
@@ -140,8 +140,9 @@ void doCapture(int x, int y) async {
         mousex: x,
         mousey: y,
         screenshotFullPath: imagePath,
-        screenshotSnippetPath: imagePath);
-    print("Captured at $x $y!");
+        screenshotSnippetPath: imagePath,
+        activewindow: windowTitle);
+    print("Captured at $x $y ($windowTitle)!");
   }
   // capturedData.
 }

@@ -2,6 +2,7 @@ class MouseEvent {
   MouseEvent({required this.x, required this.y});
   double x;
   double y;
+  String? windowTitle;
 }
 
 enum MouseButtonEventType {

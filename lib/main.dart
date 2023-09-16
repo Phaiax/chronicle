@@ -37,7 +37,11 @@ void main() async {
   });
   getListenerBackend()!.addMouseListener((MouseEvent event) {
     if (MouseButtonEvent == event.runtimeType) {
-      doCapture(event.x.toInt(), event.y.toInt());
+      MouseButtonEvent mevent = event as MouseButtonEvent;
+      if (mevent.type == MouseButtonEventType.leftButtonDown) {
+        doCapture(event.x.toInt(), event.y.toInt(),
+            windowTitle: event.windowTitle);
+      }
     }
   });
 

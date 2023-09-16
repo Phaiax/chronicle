@@ -7,7 +7,9 @@
 #include <dart-sdk/include/dart_api_dl.c>
 
 #include <functional>
+#include "psapi.h"
 #include "hid_listener_plugin.h"
+
 
 static Dart_Port keyboardListenerPort = 0;
 static Dart_Port mouseListenerPort = 0;
@@ -21,6 +23,53 @@ void NotifyDart(Dart_Port port, const void* work) {
 
 	Dart_PostCObject_DL(port, &cObject);
 }
+
+static char* GetWindowTitle(HWND hwnd) {
+    int length = GetWindowTextLength(hwnd);
+    if (length == 0) {
+        return "";
+    }
+
+    char* buffer = new char[length + 1];
+    GetWindowTextA(hwnd, buffer, length + 1);
+    return buffer;
+}
+
+
+static std::string GetPathFromWindowHandle(HWND hwnd) {
+    DWORD processId;
+    GetWindowThreadProcessId(hwnd, &processId);
+
+    HANDLE processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processId);
+    if (!processHandle) {
+        std::cerr << "Failed to open process." << std::endl;
+        return "";
+    }
+
+    char executablePath[MAX_PATH];
+    if (!GetModuleFileNameExA(processHandle, NULL, executablePath, sizeof(executablePath))) {
+        std::cerr << "Failed to get module filename." << std::endl;
+        CloseHandle(processHandle);
+        return "";
+    }
+
+    CloseHandle(processHandle);
+    return executablePath;
+}
+
+static void ExtendEventWithWindowInformation(MouseEvent& event) {
+	HWND handle = GetForegroundWindow();
+	event.windowTitle = GetWindowTitle(handle);
+	// std::string activeWindowPath = GetPathFromWindowHandle(handle);
+	// if (activeWindowPath.length() > 0) {
+	// 	HICON hIcon = ExtractIconA(GetModuleHandle(NULL), activeWindowPath.c_str(), 0);
+	// 	if (hIcon) {
+	// 		// TODO
+	// 		DestroyIcon(hIcon);
+	// 	}
+	// }
+}
+
 
 static LRESULT KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
 	if (nCode < 0 || keyboardListenerPort == 0 || Dart_PostCObject_DL == nullptr) return CallNextHookEx(NULL, nCode, wParam, lParam);
@@ -72,6 +121,8 @@ static LRESULT MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
 	mouseEvent->x = (double)info->pt.x;
 	mouseEvent->y = (double)info->pt.y;
 	mouseEvent->wheelDelta = HIWORD(info->mouseData);
+	HWND handle = GetForegroundWindow();
+	mouseEvent->windowTitle = GetWindowTitle(handle);
 
 	NotifyDart(mouseListenerPort, mouseEvent);
 
