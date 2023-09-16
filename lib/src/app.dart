@@ -1,4 +1,7 @@
 import 'dart:io';
+
+import 'package:path/path.dart' as p;
+import 'package:chronicle/src/database/db.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,7 +40,7 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
     super.initState();
 
     // Adding a post-frame callback
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // Code to run after the app is fully loaded
       onAppFullyLoaded();
     });
@@ -49,17 +52,18 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
     MouseEventPlugin.startListening(onMouseEvent);
   }
 
-  void onMouseEvent(mouseEvent) {
+  void onMouseEvent(MouseEvent mouseEvent) {
     if (mouseEvent.mouseMsg == MouseEventMsg.WM_LBUTTONDOWN) {
-      doCapture();
+      doCapture(mouseEvent.x, mouseEvent.y);
     }
   }
 
-  void doCapture() async {
+  void doCapture(int x, int y) async {
     Directory directory = await getApplicationDocumentsDirectory();
     String imageName =
         'Screenshot-${DateTime.now().millisecondsSinceEpoch}.png';
-    String imagePath = '${directory.path}/chronicle/Screenshots/$imageName';
+    String imagePath =
+        p.join(directory.path, 'chronicle', 'Screenshots', imageName);
 
     CapturedData? capturedData = await screenCapturer.capture(
       mode: CaptureMode.screen, // screen, window
@@ -67,7 +71,14 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
       copyToClipboard: false,
       silent: true,
     );
-    print("Captured!");
+    if (capturedData != null && capturedData.imageBytes != null) {
+      DatabaseHelper().insertScreenshot(
+          mousex: x,
+          mousey: y,
+          screenshotFullPath: imagePath,
+          screenshotSnippetPath: imagePath);
+      print("Captured at $x $y!");
+    }
     // capturedData.
   }
 
