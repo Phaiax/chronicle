@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as p;
 import 'package:chronicle/src/database/db.dart';
 import 'package:flutter/material.dart';
@@ -135,12 +137,25 @@ void doCapture(int x, int y, {String? windowTitle}) async {
     copyToClipboard: false,
     silent: true,
   );
+  String snippetPath = "";
   if (capturedData != null && capturedData.imageBytes != null) {
+    img.Image? imgFull = img.decodePng(capturedData.imageBytes!);
+    snippetPath = imagePath.replaceAll(".png", ".small.png");
+    if (imgFull != null) {
+      int width = min(imgFull.width, 300);
+      int height = min(imgFull.height, 50);
+      int snippet_x = max(0, x - (width / 2).floor());
+      int snippet_y = max(0, y - (height / 2).floor());
+      img.Image snippet = img.copyCrop(imgFull,
+          x: snippet_x, y: snippet_y, width: width, height: height);
+      img.encodePngFile(snippetPath, snippet);
+    }
+
     DatabaseHelper().insertScreenshot(
         mousex: x,
         mousey: y,
         screenshotFullPath: imagePath,
-        screenshotSnippetPath: imagePath,
+        screenshotSnippetPath: snippetPath,
         activewindow: windowTitle);
     print("Captured at $x $y ($windowTitle)!");
   }
