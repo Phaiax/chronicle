@@ -23,7 +23,14 @@ class _TimelinePageState extends State<TimelinePage> {
       PageController(initialPage: 1, keepPage: true);
   int pageIx = 1;
 
-  final Future<List<Doodle>> _doodlesFuture = fetchData();
+  @override
+  void initState() {
+    super.initState();
+    _doodlesFuture = fetchData();
+    pageIx = 1;
+  }
+
+  Future<List<Doodle>>? _doodlesFuture;
   List<Doodle>? _doodles; // Only valid during build()
 
   static Future<List<Doodle>> fetchData() async {
