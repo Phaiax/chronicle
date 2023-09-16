@@ -13,26 +13,42 @@ MouseEvent? mouseProc(dynamic event) {
         x: eventAddr.ref.x,
         y: eventAddr.ref.y,
         type: MouseButtonEventType.leftButtonDown);
-    mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    try {
+      mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    } catch (e) {
+      mouseEvent.windowTitle = "Non UTF8 title??";
+    }
   } else if (eventAddr.ref.eventType == bindings.MouseEventType.LeftButtonUp) {
     mouseEvent = MouseButtonEvent(
         x: eventAddr.ref.x,
         y: eventAddr.ref.y,
         type: MouseButtonEventType.leftButtonUp);
-    mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    try {
+      mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    } catch (e) {
+      mouseEvent.windowTitle = "Non UTF8 title??";
+    }
   } else if (eventAddr.ref.eventType ==
       bindings.MouseEventType.RightButtonDown) {
     mouseEvent = MouseButtonEvent(
         x: eventAddr.ref.x,
         y: eventAddr.ref.y,
         type: MouseButtonEventType.rightButtonDown);
-    mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    try {
+      mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    } catch (e) {
+      mouseEvent.windowTitle = "Non UTF8 title??";
+    }
   } else if (eventAddr.ref.eventType == bindings.MouseEventType.RightButtonUp) {
     mouseEvent = MouseButtonEvent(
         x: eventAddr.ref.x,
         y: eventAddr.ref.y,
         type: MouseButtonEventType.rightButtonUp);
-    mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    try {
+      mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    } catch (e) {
+      mouseEvent.windowTitle = "Non UTF8 title??";
+    }
   } else if (eventAddr.ref.eventType == bindings.MouseEventType.MouseMove) {
     mouseEvent = MouseMoveEvent(x: eventAddr.ref.x, y: eventAddr.ref.y);
   } else if (eventAddr.ref.eventType == bindings.MouseEventType.MouseWheel ||
@@ -43,7 +59,11 @@ MouseEvent? mouseProc(dynamic event) {
         wheelDelta: eventAddr.ref.wheelDelta,
         isHorizontal: eventAddr.ref.eventType ==
             bindings.MouseEventType.MouseHorizontalWheel);
-    mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    try {
+      mouseEvent.windowTitle = eventAddr.ref.windowTitle.toDartString();
+    } catch (e) {
+      mouseEvent.windowTitle = "Non UTF8 title??";
+    }
   }
 
   return mouseEvent;
