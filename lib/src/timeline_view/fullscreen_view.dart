@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class FullScreenView extends StatelessWidget {
-  final String imageUrl;
+  final String imagePath;
   final String heroTag;
 
   const FullScreenView(
-      {required this.imageUrl, required this.heroTag, Key? key})
+      {required this.imagePath, required this.heroTag, Key? key})
       : super(key: key);
 
   @override
@@ -16,8 +18,8 @@ class FullScreenView extends StatelessWidget {
         child: Center(
           child: Hero(
             tag: heroTag,
-            child: Image.network(
-              imageUrl,
+            child: Image.file(
+              File(imagePath),
               fit: BoxFit.contain,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,

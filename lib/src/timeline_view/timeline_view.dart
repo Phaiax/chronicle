@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chronicle/src/timeline_view/fullscreen_view.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
 import '../database/db.dart';
@@ -31,9 +32,12 @@ class _TimelinePageState extends State<TimelinePage> {
         in await DatabaseHelper().getAllScreenshots()) {
       doodles.add(Doodle(
           name: screenshot["activewindow"] ?? "",
-          time: (screenshot["time"] ?? 0).toString(),
+          time: DateFormat.jm().format(
+              DateTime.fromMillisecondsSinceEpoch((screenshot["time"] ?? 0))),
           content: screenshot["activewindow"] ?? "",
-          doodle: (screenshot["screenshotSnippetPath"] as String? ?? ""),
+          timelineImagePath:
+              (screenshot["screenshotSnippetPath"] as String? ?? ""),
+          detailsImagePath: screenshot["screenshotFullPath"],
           icon: Icon(Icons.star, color: Colors.white),
           iconBackground: Colors.cyan));
     }
@@ -134,7 +138,8 @@ class _TimelinePageState extends State<TimelinePage> {
               context,
               MaterialPageRoute(
                 builder: (_) => FullScreenView(
-                  imageUrl: doodle.doodle,
+                  imagePath:
+                      doodle.detailsImagePath ?? doodle.timelineImagePath,
                   heroTag: 'heroTag$i'.toString(),
                 ),
               ),
@@ -172,7 +177,7 @@ class _TimelinePageState extends State<TimelinePage> {
                                 child: Hero(
                                   tag: 'heroTag$i',
                                   child: Image.file(
-                                    File(doodle.doodle),
+                                    File(doodle.timelineImagePath),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -207,7 +212,7 @@ class _TimelinePageState extends State<TimelinePage> {
                                 child: Hero(
                                   tag: 'heroTag$i',
                                   child: Image.file(
-                                    File(doodle.doodle),
+                                    File(doodle.timelineImagePath),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
