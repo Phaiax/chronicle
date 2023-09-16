@@ -119,9 +119,7 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
                         title: 'Your Title', key: Key('Your Key'));
                   case SampleItemListView.routeName:
                   default:
-                    return TimelinePage(
-                        title: 'Your Title', key: Key('Your Key'));
-                    ;
+                    return TimelinePage(title: 'Wowi', key: Key('Your Key'));
                 }
               },
             );

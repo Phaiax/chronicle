@@ -48,7 +48,7 @@ class _TimelinePageState extends State<TimelinePage> {
               ),
             ]),
         appBar: AppBar(
-          title: const Text('Sample Items'),
+          title: const Text('Chronicle'),
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),
