@@ -6,9 +6,9 @@
 G_BEGIN_DECLS
 
 #ifdef FLUTTER_PLUGIN_IMPL
-#define FLUTTER_PLUGIN_EXPORT __attribute__((visibility("default")))
+#define HID_LISTENER_FLUTTER_PLUGIN_EXPORT __attribute__((visibility("default")))
 #else
-#define FLUTTER_PLUGIN_EXPORT
+#define HID_LISTENER_FLUTTER_PLUGIN_EXPORT
 #endif
 
 typedef struct _HidListenerPlugin HidListenerPlugin;
@@ -16,9 +16,9 @@ typedef struct {
   GObjectClass parent_class;
 } HidListenerPluginClass;
 
-FLUTTER_PLUGIN_EXPORT GType hid_listener_plugin_get_type();
+HID_LISTENER_FLUTTER_PLUGIN_EXPORT GType hid_listener_plugin_get_type();
 
-FLUTTER_PLUGIN_EXPORT void hid_listener_plugin_register_with_registrar(
+HID_LISTENER_FLUTTER_PLUGIN_EXPORT void hid_listener_plugin_register_with_registrar(
     FlPluginRegistrar* registrar);
 
 G_END_DECLS
@@ -27,7 +27,7 @@ G_END_DECLS
 #if defined(__cplusplus)
 #include <thread>
 #include <X11/XKBlib.h>
-class FLUTTER_PLUGIN_EXPORT HidListener {
+class HID_LISTENER_FLUTTER_PLUGIN_EXPORT HidListener {
 public:
     HidListener();
     ~HidListener();

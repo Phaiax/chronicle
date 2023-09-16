@@ -11,7 +11,7 @@ extern "C"
 
 #if defined(__cplusplus)
 #include <Windows.h>
-	class FLUTTER_PLUGIN_EXPORT HidListener
+	class HID_LISTENER_FLUTTER_PLUGIN_EXPORT HidListener
 	{
 	public:
 		HidListener();
@@ -27,7 +27,7 @@ extern "C"
 	};
 #endif
 
-    FLUTTER_PLUGIN_EXPORT void HidListenerPluginWindowsRegisterWithRegistrar(
+    HID_LISTENER_FLUTTER_PLUGIN_EXPORT void HidListenerPluginWindowsRegisterWithRegistrar(
         FlutterDesktopPluginRegistrarRef registrar);
 
 #if defined(__cplusplus)

@@ -181,23 +181,23 @@ void HidListener::WorkerThread() {
 
 extern "C" {
 
-FLUTTER_PLUGIN_EXPORT bool SetKeyboardListener(Dart_Port port) {
+HID_LISTENER_FLUTTER_PLUGIN_EXPORT bool SetKeyboardListener(Dart_Port port) {
     if(HidListener::Get() == nullptr) return false;
     keyboardListenerPort = port;
     return true;
 }
 
-FLUTTER_PLUGIN_EXPORT bool SetMouseListener(Dart_Port port) {
+HID_LISTENER_FLUTTER_PLUGIN_EXPORT bool SetMouseListener(Dart_Port port) {
     if(HidListener::Get() == nullptr) return false;
     mouseListenerPort = port;
     return true;
 }
 
-FLUTTER_PLUGIN_EXPORT void InitializeDartAPI(void* data) {
+HID_LISTENER_FLUTTER_PLUGIN_EXPORT void InitializeDartAPI(void* data) {
     Dart_InitializeApiDL(data);
 }
 
-FLUTTER_PLUGIN_EXPORT bool InitializeListeners() {
+HID_LISTENER_FLUTTER_PLUGIN_EXPORT bool InitializeListeners() {
     return true;
 }
 
