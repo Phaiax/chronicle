@@ -79,6 +79,13 @@ class _TimelinePageState extends State<TimelinePage> {
   TimelineModel centerTimelineBuilder(BuildContext context, int i) {
     final doodle = doodles[i];
     final textTheme = Theme.of(context).textTheme;
+    var isRight = i % 2 == 1;
+    if (pageIx == 0) {
+      isRight = true;
+    }
+    if (pageIx == 2) {
+      isRight = false;
+    }
     return TimelineModel(
         GestureDetector(
           onTap: () {
@@ -99,35 +106,88 @@ class _TimelinePageState extends State<TimelinePage> {
             clipBehavior: Clip.antiAlias,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Hero(
-                    tag: 'heroTag$i',
-                    child: Image.network(doodle.doodle),
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(doodle.time, style: textTheme.caption),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Text(
-                    doodle.name,
-                    style: textTheme.labelLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                ],
-              ),
+              child: isRight
+                  ? Row(
+                      children: <Widget>[
+                        Text(doodle.time, style: textTheme.caption),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Text(
+                                doodle.name,
+                                style: textTheme.labelLarge,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Hero(
+                                  tag: 'heroTag$i',
+                                  child: Image.network(
+                                    doodle.doodle,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                      ],
+                    )
+                  : Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: Hero(
+                                  tag: 'heroTag$i',
+                                  child: Image.network(
+                                    doodle.doodle,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
+                              Text(
+                                doodle.name,
+                                style: textTheme.labelLarge,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(
+                                height: 8.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        Text(doodle.time, style: textTheme.caption),
+                      ],
+                    ),
             ),
           ),
         ),
         position:
-            i % 2 == 0 ? TimelineItemPosition.right : TimelineItemPosition.left,
+            isRight ? TimelineItemPosition.right : TimelineItemPosition.left,
         isFirst: i == 0,
         isLast: i == doodles.length,
         iconBackground: doodle.iconBackground,
