@@ -1,11 +1,13 @@
 import Cocoa
 import FlutterMacOS
 import bitsdojo_window_macos
+import hid_listener
 
 class MainFlutterWindow: BitsdojoWindow {
   override func bitsdojo_window_configure() -> UInt {
     return BDW_CUSTOM_FRAME | BDW_HIDE_ON_STARTUP
   }
+  let listener = HidListener();
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController()
     let windowFrame = self.frame
