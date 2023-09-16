@@ -1,3 +1,4 @@
+import 'package:chronicle/src/timeline_view/fullscreen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
@@ -79,33 +80,46 @@ class _TimelinePageState extends State<TimelinePage> {
     final doodle = doodles[i];
     final textTheme = Theme.of(context).textTheme;
     return TimelineModel(
-        Card(
-          margin: EdgeInsets.symmetric(vertical: 16.0),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          clipBehavior: Clip.antiAlias,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Image.network(doodle.doodle),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                Text(doodle.time, style: textTheme.caption),
-                const SizedBox(
-                  height: 8.0,
-                ),
-                Text(
-                  doodle.name,
-                  style: textTheme.labelLarge,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 8.0,
-                ),
-              ],
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => FullScreenView(imageUrl: doodle.doodle),
+              ),
+            );
+          },
+          child: Card(
+            margin: EdgeInsets.symmetric(vertical: 16.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+            clipBehavior: Clip.antiAlias,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Hero(
+                    tag: 'imageHero',
+                    child: Image.network(doodle.doodle),
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  Text(doodle.time, style: textTheme.caption),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  Text(
+                    doodle.name,
+                    style: textTheme.labelLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
