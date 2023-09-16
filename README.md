@@ -6,6 +6,10 @@ A new Flutter project.
 
 ### Windows
  - `C++ ATL for latest v142 build tools (x86 & x64)` (install via Visual Studio Installer -> Visual Studion Build Tools 2022 -> Modify)
+ - Todo: Bundle with sqlite.dll, see https://pub.dev/packages/sqflite_common_ffi
+
+### Linux
+ - `sudo apt-get -y install libsqlite3-0 libsqlite3-dev`
 
 ## Getting Started
 

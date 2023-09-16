@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 
+import '../app.dart' as app;
 import 'settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -51,7 +52,7 @@ class SettingsView extends StatelessWidget {
               ],
             ),
 
-            // ↓ Add this.
+            // ↓ Add this. No I wont.
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: ElevatedButton(
@@ -61,7 +62,18 @@ class SettingsView extends StatelessWidget {
                   sleep(duration);
                   appWindow.show();
                 },
-                child: Text('Hide 5'),
+                child: Text('Hide 5 sek (broken)'),
+              ),
+            ),
+
+// added for screenshot debugging
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  app.doCapture(500, 500);
+                },
+                child: Text('Do a screenshot.'),
               ),
             ),
           ],

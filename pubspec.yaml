@@ -20,7 +20,9 @@ dependencies:
   timeline_list: ^0.0.3 # https://pub.dev/packages/timeline_list
   screen_capturer: ^0.1.7
   path_provider: ^2.0.15
-  sqflite: ^2.3.0
+  sqflite_common_ffi: ^2.3.0+2
+  path: ^1.8.3
+  image: ^4.0.17
 
 dev_dependencies:
   flutter_test:

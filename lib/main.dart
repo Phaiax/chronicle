@@ -1,3 +1,4 @@
+import 'package:chronicle/src/database/db.dart';
 import 'package:flutter/material.dart';
 
 import 'src/app.dart';
@@ -5,6 +6,7 @@ import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:hid_listener/hid_listener.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
@@ -38,6 +40,9 @@ void main() async {
       //MouseButtonEvent mbtn = (MouseButtonEvent)event;
     }
   });
+
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
