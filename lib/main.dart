@@ -1,4 +1,3 @@
-import 'package:chronicle/src/database/db.dart';
 import 'package:flutter/material.dart';
 
 import 'src/app.dart';
@@ -8,6 +7,9 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:hid_listener/hid_listener.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
@@ -21,10 +23,10 @@ void main() async {
   if (getListenerBackend() != null) {
     HidListenerBackend listener = getListenerBackend()!;
     if (!listener.initialize()) {
-      print("Failed to initialize listener backend");
+      logger.e("Failed to initialize listener backend");
     }
   } else {
-    print("No listener backend for this platform");
+    logger.e("No listener backend for this platform");
   }
 
   getListenerBackend()!.addMouseListener((MouseEvent event) {

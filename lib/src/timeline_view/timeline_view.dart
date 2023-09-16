@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chronicle/main.dart';
 import 'package:chronicle/src/timeline_view/fullscreen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,14 +12,14 @@ import 'data.dart';
 
 class TimelinePage extends StatefulWidget {
   static const routeName = '/timeline'; // add this line
-  TimelinePage({required Key key, required this.title}) : super(key: key);
+  const TimelinePage({required Key key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  _TimelinePageState createState() => _TimelinePageState();
+  TimelinePageState createState() => TimelinePageState();
 }
 
-class _TimelinePageState extends State<TimelinePage> {
+class TimelinePageState extends State<TimelinePage> {
   final PageController pageController =
       PageController(initialPage: 1, keepPage: true);
   int pageIx = 1;
@@ -26,19 +27,22 @@ class _TimelinePageState extends State<TimelinePage> {
   @override
   void initState() {
     super.initState();
+    logger.d("InitState()");
+
     _doodlesFuture = fetchData();
     pageIx = 1;
+    logger.d("InitState()");
   }
 
   Future<List<Doodle>>? _doodlesFuture;
   List<Doodle>? _doodles; // Only valid during build()
 
   static Future<List<Doodle>> fetchData() async {
-    print('fetchData()');
+    logger.d('fetchData()');
     List<Doodle> doodles = [];
     for (Map<String, dynamic> screenshot
         in await DatabaseHelper().getAllScreenshots()) {
-      print('a');
+      logger.d('a');
       doodles.add(Doodle(
           name: screenshot["activewindow"] ?? "",
           time: DateFormat.jm().format(
@@ -48,28 +52,28 @@ class _TimelinePageState extends State<TimelinePage> {
               (screenshot["screenshotSnippetPath"] as String? ?? ""),
           detailsImagePath: screenshot["screenshotFullPath"],
           windowiconPath: screenshot["windowiconPath"],
-          icon: Icon(Icons.star, color: Colors.white),
+          icon: const Icon(Icons.star, color: Colors.white),
           iconBackground: Colors.cyan));
-      print('b');
+      logger.d('b');
     }
-    print('fetchDataDone()');
+    logger.d('fetchDataDone()');
     return doodles;
   }
 
   @override
   Widget build(BuildContext context) {
-    print('_TimelinePageState->build()');
+    logger.d('_TimelinePageState->build()');
     // Dynamically select content for main area:
     FutureBuilder<List<Doodle>> pageView = FutureBuilder<List<Doodle>>(
       future: _doodlesFuture,
       builder: (BuildContext context, AsyncSnapshot<List<Doodle>> snapshot) {
-        print('FutureBuilder->build()');
+        logger.d('FutureBuilder->build()');
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Spinner as long as the timeline data is loading
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           // Text on error (don't know what should trigger this)
-          print(snapshot.error);
+          logger.w(snapshot.error);
           return Text('Error: ${snapshot.error}');
         } else {
           // The PageView once the doodle list is available
@@ -78,7 +82,7 @@ class _TimelinePageState extends State<TimelinePage> {
             timelineModel(TimelinePosition.Center, snapshot.data!),
             timelineModel(TimelinePosition.Right, snapshot.data!)
           ];
-          print('FutureBuilder->build() timelinemodels done');
+          logger.d('FutureBuilder->build() timelinemodels done');
           return PageView(
             onPageChanged: (i) => setState(() => pageIx = i),
             controller: pageController,
@@ -131,8 +135,8 @@ class _TimelinePageState extends State<TimelinePage> {
         itemBuilder: centerTimelineBuilder,
         itemCount: doodles.length,
         physics: position == TimelinePosition.Left
-            ? ClampingScrollPhysics()
-            : BouncingScrollPhysics(),
+            ? const ClampingScrollPhysics()
+            : const BouncingScrollPhysics(),
         position: position);
   }
 
@@ -161,7 +165,7 @@ class _TimelinePageState extends State<TimelinePage> {
             );
           },
           child: Card(
-            margin: EdgeInsets.symmetric(vertical: 16.0),
+            margin: const EdgeInsets.symmetric(vertical: 16.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0)),
             clipBehavior: Clip.antiAlias,
