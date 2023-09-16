@@ -52,28 +52,6 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
     DatabaseHelper().debugPrintDatabaseScreenshots(); // Trigger initializatoin
   }
 
-  /* void onMouseEvent(MouseEvent mouseEvent) {
-    if (mouseEvent.mouseMsg == MouseEventMsg.WM_LBUTTONDOWN) {
-      doCapture();
-    }
-  } */
-
-  void doCapture() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String imageName =
-        'Screenshot-${DateTime.now().millisecondsSinceEpoch}.png';
-    String imagePath = '${directory.path}/chronicle/Screenshots/$imageName';
-
-    CapturedData? capturedData = await screenCapturer.capture(
-      mode: CaptureMode.screen, // screen, window
-      imagePath: imagePath,
-      copyToClipboard: false,
-      silent: true,
-    );
-    print("Captured!");
-    // capturedData.
-  }
-
   @override
   Widget build(BuildContext context) {
     // Glue the SettingsController to the MaterialApp.

@@ -37,7 +37,7 @@ void main() async {
   });
   getListenerBackend()!.addMouseListener((MouseEvent event) {
     if (MouseButtonEvent == event.runtimeType) {
-      //MouseButtonEvent mbtn = (MouseButtonEvent)event;
+      doCapture(event.x.toInt(), event.y.toInt());
     }
   });
 
