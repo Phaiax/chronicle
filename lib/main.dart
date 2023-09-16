@@ -29,10 +29,15 @@ void main() async {
   getListenerBackend()!.addKeyboardListener((event) {
     print("${event.logicalKey.debugName}");
   });
-/* 
-  getListenerBackend()!.addMouseListener((event) {
-    print("${event.x}");
-  }); */
+
+  getListenerBackend()!.addKeyboardListener((p0) {
+    print("${p0.physicalKey.debugName}");
+  });
+  getListenerBackend()!.addMouseListener((MouseEvent event) {
+    if (MouseButtonEvent == event.runtimeType) {
+      //MouseButtonEvent mbtn = (MouseButtonEvent)event;
+    }
+  });
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
