@@ -52,14 +52,17 @@ class SettingsView extends StatelessWidget {
             ),
 
             // ↓ Add this.
-            ElevatedButton(
-              onPressed: () {
-                appWindow.hide();
-                var duration = const Duration(seconds: 5);
-                sleep(duration);
-                appWindow.show();
-              },
-              child: Text('Hide 5'),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  appWindow.hide();
+                  var duration = const Duration(seconds: 5);
+                  sleep(duration);
+                  appWindow.show();
+                },
+                child: Text('Hide 5'),
+              ),
             ),
           ],
         ),

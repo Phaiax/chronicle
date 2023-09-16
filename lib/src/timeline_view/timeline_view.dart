@@ -85,7 +85,10 @@ class _TimelinePageState extends State<TimelinePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => FullScreenView(imageUrl: doodle.doodle),
+                builder: (_) => FullScreenView(
+                  imageUrl: doodle.doodle,
+                  heroTag: 'heroTag$i'.toString(),
+                ),
               ),
             );
           },
@@ -100,7 +103,7 @@ class _TimelinePageState extends State<TimelinePage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Hero(
-                    tag: 'imageHero',
+                    tag: 'heroTag$i',
                     child: Image.network(doodle.doodle),
                   ),
                   const SizedBox(

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 class FullScreenView extends StatelessWidget {
   final String imageUrl;
+  final String heroTag;
 
-  const FullScreenView({required this.imageUrl, Key? key}) : super(key: key);
+  const FullScreenView(
+      {required this.imageUrl, required this.heroTag, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,7 @@ class FullScreenView extends StatelessWidget {
         onTap: () => Navigator.pop(context),
         child: Center(
           child: Hero(
-            tag: 'imageHero',
+            tag: heroTag,
             child: Image.network(
               imageUrl,
               fit: BoxFit.contain,
