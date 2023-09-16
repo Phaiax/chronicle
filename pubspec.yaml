@@ -16,6 +16,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   timeline_list: ^0.0.3 # https://pub.dev/packages/timeline_list
+  mouse_event: ^0.1.1
 
 dev_dependencies:
   flutter_test:

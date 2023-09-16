@@ -8,15 +8,45 @@ import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
 import 'package:chronicle/src/timeline_view/timeline_view.dart';
+import 'package:mouse_event/mouse_event.dart';
 
 /// The Widget that configures your application.
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({
     super.key,
     required this.settingsController,
   });
 
   final SettingsController settingsController;
+
+  @override
+  RunSomeStuffAfterInitState createState() =>
+      RunSomeStuffAfterInitState(settingsController);
+}
+
+class RunSomeStuffAfterInitState extends State<MyApp> {
+  final SettingsController settingsController;
+
+  RunSomeStuffAfterInitState(this.settingsController);
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Adding a post-frame callback
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // Code to run after the app is fully loaded
+      onAppFullyLoaded();
+    });
+  }
+
+  void onAppFullyLoaded() {
+    // This is the code that gets executed after the app is fully loaded
+    print("The app has been fully loaded!");
+    MouseEventPlugin.startListening((mouseEvent) {
+      print("${mouseEvent.x} ${mouseEvent.y}");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +107,6 @@ class MyApp extends StatelessWidget {
                     return TimelinePage(
                         title: 'Your Title', key: Key('Your Key'));
                   case SampleItemListView.routeName:
-
                   default:
                     return TimelinePage(
                         title: 'Your Title', key: Key('Your Key'));
