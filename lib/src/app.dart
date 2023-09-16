@@ -46,14 +46,14 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
   void onAppFullyLoaded() {
     // This is the code that gets executed after the app is fully loaded
     print("The app has been fully loaded!");
-    MouseEventPlugin.startListening(onMouseEvent);
+    //  MouseEventPlugin.startListening(onMouseEvent);
   }
 
-  void onMouseEvent(mouseEvent) {
+  /* void onMouseEvent(mouseEvent) {
     if (mouseEvent.mouseMsg == MouseEventMsg.WM_LBUTTONDOWN) {
       doCapture();
     }
-  }
+  } */
 
   void doCapture() async {
     Directory directory = await getApplicationDocumentsDirectory();

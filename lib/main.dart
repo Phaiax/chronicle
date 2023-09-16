@@ -4,6 +4,7 @@ import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:hid_listener/hid_listener.dart';
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple
@@ -13,6 +14,25 @@ void main() async {
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
+
+  if (getListenerBackend() != null) {
+    HidListenerBackend listener = getListenerBackend()!;
+    if (!listener.initialize()) {
+      print("Failed to initialize listener backend");
+    } else {
+      print("initialized hid listener");
+    }
+  } else {
+    print("No listener backend for this platform");
+  }
+
+  getListenerBackend()!.addKeyboardListener((event) {
+    print("${event.logicalKey.debugName}");
+  });
+/* 
+  getListenerBackend()!.addMouseListener((event) {
+    print("${event.x}");
+  }); */
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
