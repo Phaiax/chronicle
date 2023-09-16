@@ -51,7 +51,7 @@ class SettingsView extends StatelessWidget {
               ],
             ),
 
-            // ↓ Add this.
+            // ↓ Add this. No I wont.
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
               child: ElevatedButton(
@@ -61,7 +61,18 @@ class SettingsView extends StatelessWidget {
                   sleep(duration);
                   appWindow.show();
                 },
-                child: Text('Hide 5'),
+                child: Text('Hide 5 sek (broken)'),
+              ),
+            ),
+
+// added for screenshot debugging
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  // add the capture here DÄN!!!!
+                },
+                child: Text('Do a screenshot.'),
               ),
             ),
           ],

@@ -50,6 +50,7 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
     // This is the code that gets executed after the app is fully loaded
     print("The app has been fully loaded!");
     MouseEventPlugin.startListening(onMouseEvent);
+    DatabaseHelper().debugPrintDatabaseScreenshots(); // Trigger initializatoin
   }
 
   void onMouseEvent(MouseEvent mouseEvent) {
