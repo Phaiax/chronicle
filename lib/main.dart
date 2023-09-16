@@ -18,7 +18,6 @@ void main() async {
 
   sqfliteFfiInit();
   databaseFactory = databaseFactoryFfi;
-  DatabaseHelper().debugPrintDatabaseScreenshots(); // Trigger initializatoin
 
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
