@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
+  flutter_acrylic
   hid_listener
   screen_capturer
 )
