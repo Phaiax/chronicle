@@ -2,6 +2,11 @@
 
 A new Flutter project.
 
+## Dependencies
+
+### Windows
+ - `C++ ATL for latest v142 build tools (x86 & x64)` (install via Visual Studio Installer -> Visual Studion Build Tools 2022 -> Modify)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application that follows the

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +10,8 @@ import 'settings/settings_view.dart';
 
 import 'package:chronicle/src/timeline_view/timeline_view.dart';
 import 'package:mouse_event/mouse_event.dart';
+import 'package:screen_capturer/screen_capturer.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatefulWidget {
@@ -43,9 +46,29 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
   void onAppFullyLoaded() {
     // This is the code that gets executed after the app is fully loaded
     print("The app has been fully loaded!");
-    MouseEventPlugin.startListening((mouseEvent) {
-      print("${mouseEvent.x} ${mouseEvent.y}");
-    });
+    MouseEventPlugin.startListening(onMouseEvent);
+  }
+
+  void onMouseEvent(mouseEvent) {
+    if (mouseEvent.mouseMsg == MouseEventMsg.WM_LBUTTONDOWN) {
+      doCapture();
+    }
+  }
+
+  void doCapture() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    String imageName =
+        'Screenshot-${DateTime.now().millisecondsSinceEpoch}.png';
+    String imagePath = '${directory.path}/chronicle/Screenshots/$imageName';
+
+    CapturedData? capturedData = await screenCapturer.capture(
+      mode: CaptureMode.screen, // screen, window
+      imagePath: imagePath,
+      copyToClipboard: false,
+      silent: true,
+    );
+    print("Captured!");
+    // capturedData.
   }
 
   @override
