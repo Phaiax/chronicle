@@ -16,7 +16,7 @@ class Doodle {
       required this.iconBackground});
 }
 
-const List<Doodle> doodles = [
+const List<Doodle> GOOGLE_DOODLES = [
   Doodle(
       name: "VS Code",
       time: "11:10",

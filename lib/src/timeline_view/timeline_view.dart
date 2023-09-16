@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:chronicle/src/timeline_view/fullscreen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_list/timeline.dart';
 import 'package:timeline_list/timeline_model.dart';
+import '../database/db.dart';
 import '../settings/settings_view.dart';
 import 'data.dart';
 
@@ -19,13 +22,52 @@ class _TimelinePageState extends State<TimelinePage> {
       PageController(initialPage: 1, keepPage: true);
   int pageIx = 1;
 
+  final Future<List<Doodle>> _doodlesFuture = fetchData();
+  List<Doodle>? _doodles; // Only valid during build()
+
+  static Future<List<Doodle>> fetchData() async {
+    List<Doodle> doodles = [];
+    for (Map<String, dynamic> screenshot
+        in await DatabaseHelper().getAllScreenshots()) {
+      doodles.add(Doodle(
+          name: screenshot["activewindow"] ?? "",
+          time: (screenshot["time"] ?? 0).toString(),
+          content: screenshot["activewindow"] ?? "",
+          doodle: (screenshot["screenshotSnippetPath"] as String? ?? ""),
+          icon: Icon(Icons.star, color: Colors.white),
+          iconBackground: Colors.cyan));
+    }
+    return doodles;
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<Widget> pages = [
-      timelineModel(TimelinePosition.Left),
-      timelineModel(TimelinePosition.Center),
-      timelineModel(TimelinePosition.Right)
-    ];
+    // Dynamically select content for main area:
+    FutureBuilder<List<Doodle>> pageView = FutureBuilder<List<Doodle>>(
+      future: _doodlesFuture,
+      builder: (BuildContext context, AsyncSnapshot<List<Doodle>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Spinner as long as the timeline data is loading
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // Text on error (don't know what should trigger this)
+          print(snapshot.error);
+          return Text('Error: ${snapshot.error}');
+        } else {
+          // The PageView once the doodle list is available
+          List<Widget> pages = [
+            timelineModel(TimelinePosition.Left, snapshot.data!),
+            timelineModel(TimelinePosition.Center, snapshot.data!),
+            timelineModel(TimelinePosition.Right, snapshot.data!)
+          ];
+          return PageView(
+            onPageChanged: (i) => setState(() => pageIx = i),
+            controller: pageController,
+            children: pages,
+          );
+        }
+      },
+    );
 
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
@@ -61,23 +103,22 @@ class _TimelinePageState extends State<TimelinePage> {
             ),
           ],
         ),
-        body: PageView(
-          onPageChanged: (i) => setState(() => pageIx = i),
-          controller: pageController,
-          children: pages,
-        ));
+        body: pageView);
   }
 
-  timelineModel(TimelinePosition position) => Timeline.builder(
-      itemBuilder: centerTimelineBuilder,
-      itemCount: doodles.length,
-      physics: position == TimelinePosition.Left
-          ? ClampingScrollPhysics()
-          : BouncingScrollPhysics(),
-      position: position);
+  timelineModel(TimelinePosition position, List<Doodle> doodles) {
+    _doodles = doodles;
+    return Timeline.builder(
+        itemBuilder: centerTimelineBuilder,
+        itemCount: doodles.length,
+        physics: position == TimelinePosition.Left
+            ? ClampingScrollPhysics()
+            : BouncingScrollPhysics(),
+        position: position);
+  }
 
   TimelineModel centerTimelineBuilder(BuildContext context, int i) {
-    final doodle = doodles[i];
+    final doodle = _doodles![i];
     final textTheme = Theme.of(context).textTheme;
     var isRight = i % 2 == 1;
     if (pageIx == 0) {
@@ -130,8 +171,8 @@ class _TimelinePageState extends State<TimelinePage> {
                                 padding: const EdgeInsets.all(0.0),
                                 child: Hero(
                                   tag: 'heroTag$i',
-                                  child: Image.network(
-                                    doodle.doodle,
+                                  child: Image.file(
+                                    File(doodle.doodle),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -165,8 +206,8 @@ class _TimelinePageState extends State<TimelinePage> {
                                 padding: const EdgeInsets.all(0.0),
                                 child: Hero(
                                   tag: 'heroTag$i',
-                                  child: Image.network(
-                                    doodle.doodle,
+                                  child: Image.file(
+                                    File(doodle.doodle),
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -189,7 +230,7 @@ class _TimelinePageState extends State<TimelinePage> {
         position:
             isRight ? TimelineItemPosition.right : TimelineItemPosition.left,
         isFirst: i == 0,
-        isLast: i == doodles.length,
+        isLast: i == _doodles!.length,
         iconBackground: doodle.iconBackground,
         icon: doodle.icon);
   }
