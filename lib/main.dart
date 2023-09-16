@@ -9,7 +9,20 @@ import 'package:hid_listener/hid_listener.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:logger/logger.dart';
 
-final logger = Logger();
+final logger = Logger(
+    printer: PrettyPrinter(
+  methodCount: 0, // Number of method calls to be displayed
+  errorMethodCount: 8, // Number of method calls if stacktrace is provided
+  lineLength: 120, // Width of the output
+  colors: true, // Colorful log messages
+  printEmojis: true, // Print an emoji for each log message
+  printTime: false, // Should each log print contain a timestamp
+  excludeBox: {
+    Level.trace: true,
+    Level.info: true,
+    Level.debug: true,
+  },
+));
 
 void main() async {
   // Set up the SettingsController, which will glue user settings to multiple

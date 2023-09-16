@@ -42,7 +42,6 @@ class TimelinePageState extends State<TimelinePage> {
     List<Doodle> doodles = [];
     for (Map<String, dynamic> screenshot
         in await DatabaseHelper().getAllScreenshots()) {
-      logger.d('a');
       doodles.add(Doodle(
           name: screenshot["activewindow"] ?? "",
           time: DateFormat.jm().format(
@@ -54,7 +53,6 @@ class TimelinePageState extends State<TimelinePage> {
           windowiconPath: screenshot["windowiconPath"],
           icon: const Icon(Icons.star, color: Colors.white),
           iconBackground: Colors.cyan));
-      logger.d('b');
     }
     logger.d('fetchDataDone()');
     return doodles;
