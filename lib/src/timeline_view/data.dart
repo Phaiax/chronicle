@@ -6,6 +6,7 @@ class Doodle {
   final String content;
   final String timelineImagePath;
   final String? detailsImagePath;
+  final String? windowiconPath;
   final Color iconBackground;
   final Icon icon;
   const Doodle(
@@ -14,6 +15,7 @@ class Doodle {
       required this.content,
       required this.timelineImagePath,
       this.detailsImagePath,
+      this.windowiconPath,
       required this.icon,
       required this.iconBackground});
 }

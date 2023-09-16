@@ -155,7 +155,18 @@ class _TimelinePageState extends State<TimelinePage> {
               child: isRight
                   ? Row(
                       children: <Widget>[
-                        Text(doodle.time, style: textTheme.caption),
+                        Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              (doodle.windowiconPath != null)
+                                  ? Image.file(
+                                      File(doodle.windowiconPath!),
+                                      fit: BoxFit.fill,
+                                      width: 40,
+                                    )
+                                  : const Text(''),
+                              Text(doodle.time, style: textTheme.bodySmall),
+                            ]),
                         const SizedBox(
                           width: 8.0,
                         ),
@@ -226,7 +237,18 @@ class _TimelinePageState extends State<TimelinePage> {
                         const SizedBox(
                           width: 8.0,
                         ),
-                        Text(doodle.time, style: textTheme.caption),
+                        Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              (doodle.windowiconPath != null)
+                                  ? Image.file(
+                                      File(doodle.windowiconPath!),
+                                      fit: BoxFit.fill,
+                                      width: 40,
+                                    )
+                                  : const Text(''),
+                              Text(doodle.time, style: textTheme.bodySmall),
+                            ]),
                       ],
                     ),
             ),
