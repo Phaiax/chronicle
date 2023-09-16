@@ -34,9 +34,11 @@ class _TimelinePageState extends State<TimelinePage> {
   List<Doodle>? _doodles; // Only valid during build()
 
   static Future<List<Doodle>> fetchData() async {
+    print('fetchData()');
     List<Doodle> doodles = [];
     for (Map<String, dynamic> screenshot
         in await DatabaseHelper().getAllScreenshots()) {
+      print('a');
       doodles.add(Doodle(
           name: screenshot["activewindow"] ?? "",
           time: DateFormat.jm().format(
@@ -45,18 +47,23 @@ class _TimelinePageState extends State<TimelinePage> {
           timelineImagePath:
               (screenshot["screenshotSnippetPath"] as String? ?? ""),
           detailsImagePath: screenshot["screenshotFullPath"],
+          windowiconPath: screenshot["windowiconPath"],
           icon: Icon(Icons.star, color: Colors.white),
           iconBackground: Colors.cyan));
+      print('b');
     }
+    print('fetchDataDone()');
     return doodles;
   }
 
   @override
   Widget build(BuildContext context) {
+    print('_TimelinePageState->build()');
     // Dynamically select content for main area:
     FutureBuilder<List<Doodle>> pageView = FutureBuilder<List<Doodle>>(
       future: _doodlesFuture,
       builder: (BuildContext context, AsyncSnapshot<List<Doodle>> snapshot) {
+        print('FutureBuilder->build()');
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Spinner as long as the timeline data is loading
           return CircularProgressIndicator();
@@ -71,6 +78,7 @@ class _TimelinePageState extends State<TimelinePage> {
             timelineModel(TimelinePosition.Center, snapshot.data!),
             timelineModel(TimelinePosition.Right, snapshot.data!)
           ];
+          print('FutureBuilder->build() timelinemodels done');
           return PageView(
             onPageChanged: (i) => setState(() => pageIx = i),
             controller: pageController,
