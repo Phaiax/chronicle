@@ -59,30 +59,6 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
     }
   }
 
-  void doCapture(int x, int y) async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String imageName =
-        'Screenshot-${DateTime.now().millisecondsSinceEpoch}.png';
-    String imagePath =
-        p.join(directory.path, 'chronicle', 'Screenshots', imageName);
-
-    CapturedData? capturedData = await screenCapturer.capture(
-      mode: CaptureMode.screen, // screen, window
-      imagePath: imagePath,
-      copyToClipboard: false,
-      silent: true,
-    );
-    if (capturedData != null && capturedData.imageBytes != null) {
-      DatabaseHelper().insertScreenshot(
-          mousex: x,
-          mousey: y,
-          screenshotFullPath: imagePath,
-          screenshotSnippetPath: imagePath);
-      print("Captured at $x $y!");
-    }
-    // capturedData.
-  }
-
   @override
   Widget build(BuildContext context) {
     // Glue the SettingsController to the MaterialApp.
@@ -154,4 +130,27 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
       },
     );
   }
+}
+
+void doCapture(int x, int y) async {
+  Directory directory = await getApplicationDocumentsDirectory();
+  String imageName = 'Screenshot-${DateTime.now().millisecondsSinceEpoch}.png';
+  String imagePath =
+      p.join(directory.path, 'chronicle', 'Screenshots', imageName);
+
+  CapturedData? capturedData = await screenCapturer.capture(
+    mode: CaptureMode.screen, // screen, window
+    imagePath: imagePath,
+    copyToClipboard: false,
+    silent: true,
+  );
+  if (capturedData != null && capturedData.imageBytes != null) {
+    DatabaseHelper().insertScreenshot(
+        mousex: x,
+        mousey: y,
+        screenshotFullPath: imagePath,
+        screenshotSnippetPath: imagePath);
+    print("Captured at $x $y!");
+  }
+  // capturedData.
 }
