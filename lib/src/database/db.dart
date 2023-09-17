@@ -127,7 +127,7 @@ class DatabaseHelper {
     final db = await database;
     await db.insert('Screenshots', row);
     _epoch.value += 1;
-    logger.i("Increment epoch to ${_epoch.value}");
+    // logger.i("Increment epoch to ${_epoch.value}");
   }
 
   Future<List<Map<String, dynamic>>> getScreenshotsByTimeRange(

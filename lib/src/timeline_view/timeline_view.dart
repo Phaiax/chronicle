@@ -27,17 +27,13 @@ class TimelinePageState extends State<TimelinePage> {
   @override
   void initState() {
     super.initState();
-    logger.d("InitState()");
-
     pageIx = 1;
-    logger.d("InitState() done");
   }
 
   Future<List<Doodle>>? _doodlesFuture;
   List<Doodle>? _doodles; // Only valid during build()
 
   static Future<List<Doodle>> fetchData() async {
-    logger.d('fetchData()');
     List<Doodle> doodles = [];
     for (int i = 0; i < 1; i += 1) {
       for (Map<String, dynamic> screenshot
@@ -55,13 +51,11 @@ class TimelinePageState extends State<TimelinePage> {
             iconBackground: Colors.cyan));
       }
     }
-    logger.d('fetchDataDone()');
     return doodles;
   }
 
   @override
   Widget build(BuildContext context) {
-    logger.d('_TimelinePageState->build()');
     // Dynamically select content for main area:
     ValueListenableBuilder<int> pageView = ValueListenableBuilder<int>(
       valueListenable: DatabaseHelper().epoch,
@@ -75,7 +69,6 @@ class TimelinePageState extends State<TimelinePage> {
             // return Center(child: const CircularProgressIndicator());
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              logger.d('FutureBuilder->build() spinner');
               // Spinner as long as the timeline data is loading
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
@@ -83,14 +76,12 @@ class TimelinePageState extends State<TimelinePage> {
               logger.w(snapshot.error);
               return Text('Error: ${snapshot.error}');
             } else {
-              logger.d('FutureBuilder->build() withdata');
               // The PageView once the doodle list is available
               List<Widget> pages = [
                 timelineModel(TimelinePosition.Left, snapshot.data!),
                 timelineModel(TimelinePosition.Center, snapshot.data!),
                 timelineModel(TimelinePosition.Right, snapshot.data!)
               ];
-              logger.d('FutureBuilder->build() timelinemodels done');
               return PageView(
                 onPageChanged: (i) => setState(() => pageIx = i),
                 controller: pageController,
