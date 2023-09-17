@@ -29,9 +29,8 @@ class TimelinePageState extends State<TimelinePage> {
     super.initState();
     logger.d("InitState()");
 
-    _doodlesFuture = fetchData();
     pageIx = 1;
-    logger.d("InitState()");
+    logger.d("InitState() done");
   }
 
   Future<List<Doodle>>? _doodlesFuture;
@@ -40,19 +39,21 @@ class TimelinePageState extends State<TimelinePage> {
   static Future<List<Doodle>> fetchData() async {
     logger.d('fetchData()');
     List<Doodle> doodles = [];
-    for (Map<String, dynamic> screenshot
-        in await DatabaseHelper().getAllScreenshots()) {
-      doodles.add(Doodle(
-          name: screenshot["activewindow"] ?? "",
-          time: DateFormat.jm().format(
-              DateTime.fromMillisecondsSinceEpoch((screenshot["time"] ?? 0))),
-          content: screenshot["activewindow"] ?? "",
-          timelineImagePath:
-              (screenshot["screenshotSnippetPath"] as String? ?? ""),
-          detailsImagePath: screenshot["screenshotFullPath"],
-          windowiconPath: screenshot["windowiconPath"],
-          icon: const Icon(Icons.star, color: Colors.white),
-          iconBackground: Colors.cyan));
+    for (int i = 0; i < 1; i += 1) {
+      for (Map<String, dynamic> screenshot
+          in await DatabaseHelper().getAllScreenshots()) {
+        doodles.add(Doodle(
+            name: screenshot["activewindow"] ?? "",
+            time: DateFormat.jm().format(
+                DateTime.fromMillisecondsSinceEpoch((screenshot["time"] ?? 0))),
+            content: screenshot["activewindow"] ?? "",
+            timelineImagePath:
+                (screenshot["screenshotSnippetPath"] as String? ?? ""),
+            detailsImagePath: screenshot["screenshotFullPath"],
+            windowiconPath: screenshot["windowiconPath"],
+            icon: const Icon(Icons.star, color: Colors.white),
+            iconBackground: Colors.cyan));
+      }
     }
     logger.d('fetchDataDone()');
     return doodles;
@@ -62,31 +63,43 @@ class TimelinePageState extends State<TimelinePage> {
   Widget build(BuildContext context) {
     logger.d('_TimelinePageState->build()');
     // Dynamically select content for main area:
-    FutureBuilder<List<Doodle>> pageView = FutureBuilder<List<Doodle>>(
-      future: _doodlesFuture,
-      builder: (BuildContext context, AsyncSnapshot<List<Doodle>> snapshot) {
-        logger.d('FutureBuilder->build()');
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // Spinner as long as the timeline data is loading
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          // Text on error (don't know what should trigger this)
-          logger.w(snapshot.error);
-          return Text('Error: ${snapshot.error}');
-        } else {
-          // The PageView once the doodle list is available
-          List<Widget> pages = [
-            timelineModel(TimelinePosition.Left, snapshot.data!),
-            timelineModel(TimelinePosition.Center, snapshot.data!),
-            timelineModel(TimelinePosition.Right, snapshot.data!)
-          ];
-          logger.d('FutureBuilder->build() timelinemodels done');
-          return PageView(
-            onPageChanged: (i) => setState(() => pageIx = i),
-            controller: pageController,
-            children: pages,
-          );
-        }
+    ValueListenableBuilder<int> pageView = ValueListenableBuilder<int>(
+      valueListenable: DatabaseHelper().epoch,
+      builder: (BuildContext context, int count, Widget? child) {
+        logger.i("Rebuild due to epoch = $count");
+        _doodlesFuture = fetchData();
+        FutureBuilder<List<Doodle>> pageView = FutureBuilder<List<Doodle>>(
+          future: _doodlesFuture,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Doodle>> snapshot) {
+            // return Center(child: const CircularProgressIndicator());
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              logger.d('FutureBuilder->build() spinner');
+              // Spinner as long as the timeline data is loading
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              // Text on error (don't know what should trigger this)
+              logger.w(snapshot.error);
+              return Text('Error: ${snapshot.error}');
+            } else {
+              logger.d('FutureBuilder->build() withdata');
+              // The PageView once the doodle list is available
+              List<Widget> pages = [
+                timelineModel(TimelinePosition.Left, snapshot.data!),
+                timelineModel(TimelinePosition.Center, snapshot.data!),
+                timelineModel(TimelinePosition.Right, snapshot.data!)
+              ];
+              logger.d('FutureBuilder->build() timelinemodels done');
+              return PageView(
+                onPageChanged: (i) => setState(() => pageIx = i),
+                controller: pageController,
+                children: pages,
+              );
+            }
+          },
+        );
+        return pageView;
       },
     );
 

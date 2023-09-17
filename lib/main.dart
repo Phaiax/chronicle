@@ -46,8 +46,8 @@ void main() async {
     if (MouseButtonEvent == event.runtimeType) {
       MouseButtonEvent mevent = event as MouseButtonEvent;
       if (mevent.type == MouseButtonEventType.leftButtonDown) {
-        // doCapture(event.x.toInt(), event.y.toInt(),
-        //     windowTitle: event.windowTitle);
+        doCapture(event.x.toInt(), event.y.toInt(),
+            windowTitle: event.windowTitle);
       }
     }
   });
