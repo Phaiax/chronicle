@@ -51,7 +51,7 @@ class RunSomeStuffAfterInitState extends State<MyApp> {
     // This is the code that gets executed after the app is fully loaded
     logger.i("The app has been fully loaded!");
     //  MouseEventPlugin.startListening(onMouseEvent);
-    DatabaseHelper().debugPrintDatabaseScreenshots(); // Trigger initializatoin
+    // DatabaseHelper().debugPrintDatabaseScreenshots(); // Trigger initializatoin
   }
 
   @override

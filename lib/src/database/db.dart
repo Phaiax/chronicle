@@ -1,4 +1,5 @@
 import 'package:chronicle/main.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -20,6 +21,12 @@ class DatabaseHelper {
     _databaseInitialization ??= _initDatabase();
     _database = await _databaseInitialization;
     return _database!;
+  }
+
+  final ValueNotifier<int> _epoch = ValueNotifier<int>(0);
+
+  ValueNotifier<int> get epoch {
+    return _epoch;
   }
 
   Future<Database> _initDatabase() async {
@@ -119,6 +126,8 @@ class DatabaseHelper {
     };
     final db = await database;
     await db.insert('Screenshots', row);
+    _epoch.value += 1;
+    logger.i("Increment epoch to ${_epoch.value}");
   }
 
   Future<List<Map<String, dynamic>>> getScreenshotsByTimeRange(
